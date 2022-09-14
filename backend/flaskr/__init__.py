@@ -83,27 +83,24 @@ def create_app(test_config=None):
 
     @app.route("/questions")
     def get_questions():
-        try:
-            selection = Question.query.order_by(Question.id).all()
-            current_questions = paginate_questions(request, selection)
+        selection = Question.query.order_by(Question.id).all()
+        current_questions = paginate_questions(request, selection)
 
-            selection = Category.query.order_by(Category.id).all()
-            categories = {cat.id : cat.type for  cat in selection}
+        selection = Category.query.order_by(Category.id).all()
+        categories = {cat.id : cat.type for  cat in selection}
 
-            if len(current_questions) == 0:
-                abort(404)
+        if len(current_questions) == 0:
+            abort(404)
 
-            return jsonify(
-                {
-                    "questions": current_questions,
-                    "totalQuestions": len(Question.query.all()),
-                    "categories": categories,
-                    "currentCategory": "All"
+        return jsonify(
+            {
+                "questions": current_questions,
+                "totalQuestions": len(Question.query.all()),
+                "categories": categories,
+                "currentCategory": "All"
 
-                }
-            ) 
-        except:
-            abort(400)       
+            }
+        )     
 
     """
     @TODO:
